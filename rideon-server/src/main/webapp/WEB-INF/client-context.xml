@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <bean id="marshallingHttpMessageConverter"
+                      class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+                    <property name="marshaller" ref="jaxbMarshaller" />
+                    <property name="unmarshaller" ref="jaxbMarshaller" />
+                </bean>   
+                <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+            </list>
+        </property>
+    </bean>
+	
+    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>com.rideon.model.dto.BicycleDto</value>
+                <value>com.rideon.model.dto.EventDto</value>
+                <value>com.rideon.model.dto.FriendshipRequestDto</value>
+                <value>com.rideon.model.dto.GroupDto</value>
+                <value>com.rideon.model.dto.LineStringDto</value>
+                <value>com.rideon.model.dto.MessageDto</value>
+                <value>com.rideon.model.dto.MultimediaDto</value>
+                <value>com.rideon.model.dto.NotificationDto</value>
+                <value>com.rideon.model.dto.PracticeDto</value>
+                <value>com.rideon.model.dto.RouteDto</value>
+                <value>com.rideon.model.dto.SegmentDto</value>
+                <value>com.rideon.model.dto.SegmentPracticeDto</value>
+                <value>com.rideon.model.dto.SegmentPracticePkDto</value>
+                <value>com.rideon.model.dto.SignFormDto</value>
+                <value>com.rideon.model.dto.UserDto</value>
+                <value>com.rideon.model.dto.list.BaseListDto</value>
+                <value>com.rideon.model.dto.list.PracticeListDto</value>
+                <value>com.rideon.model.dto.list.EventListDto</value>
+                <!--GeoJSON-->
+                <value>org.geojson.Crs</value>
+                <value>org.geojson.Feature</value>
+                <value>org.geojson.FeatureCollection</value>
+                <value>org.geojson.GeoJsonObject</value>
+                <value>org.geojson.Geometry</value>
+                <value>org.geojson.GeometryCollection</value>
+                <value>org.geojson.LineString</value>
+                <value>org.geojson.LngLatAlt</value>
+                <value>org.geojson.MultiLineString</value>
+                <value>org.geojson.MultiPoint</value>
+                <value>org.geojson.MultiPolygon</value>
+                <value>org.geojson.Point</value>
+                <value>org.geojson.Polygon</value>
+            </list>
+        </property>
+    </bean>
+</beans>

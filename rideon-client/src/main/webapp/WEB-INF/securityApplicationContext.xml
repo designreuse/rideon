@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/security 
+       http://www.springframework.org/schema/security/spring-security-3.1.xsd
+">
+    
+    <bean id="authenticationProcessingFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="filterProcessesUrl" value="/j_spring_security_check" />
+        <property name="authenticationSuccessHandler">
+            <bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler"/>
+        </property>
+        <property name="authenticationFailureHandler">
+            <bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+            </bean>
+        </property>
+    </bean>
+ 
+    <security:authentication-manager alias="authenticationManager" erase-credentials="false">
+        <security:authentication-provider ref="myAuthenticationProvider"/>
+    </security:authentication-manager>
+ 
+    <bean id="myAuthenticationProvider" class="com.rideon.web.security.MyAuthenticationProvider"/>
+ 
+    <bean id="myUserDetailsService" class="com.rideon.web.security.MyUserDetailService" />
+ 
+    <security:http auto-config="true" use-expressions="true" authentication-manager-ref="authenticationManager">
+        <security:intercept-url pattern="/login**" access="permitAll" />
+        <security:intercept-url pattern="/sign**" access="permitAll" />
+        <security:intercept-url pattern="/resources/**" access="permitAll" />
+        <security:intercept-url pattern="/**" access="isAuthenticated()" />
+        <security:form-login login-page="/login" authentication-failure-url="/loginfailed" />
+        <security:logout invalidate-session="true" logout-success-url="/" logout-url="/j_spring_security_logout" delete-cookies="true"/>
+        <!--<security:remember-me key="myAppKey" token-validity-seconds="864000" user-service-ref="myUserDetailsService"/>-->
+        <!--<security:remember-me services-ref="rememberMeServices"/>-->
+    </security:http>
+    
+    <!--<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">-->
+    <bean id="rememberMeServices" class="com.rideon.web.security.MyRememberMeService">
+        <property name="userDetailsService" ref="myUserDetailsService"/>
+        <property name="tokenValiditySeconds" value="864000"/>
+        <property name="cookieName" value="SPRING_RM"/>
+        <property name="key" value="myAppKey"/>
+    </bean>
+    
+</beans>

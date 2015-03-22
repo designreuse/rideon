@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/jsp/layouts">
+    
+    <excludes>            
+        <pattern>/login*</pattern>
+        <pattern>/sign*</pattern>
+    </excludes> 
+    
+    <decorator name="basic-theme" page="layout.jsp">
+        <pattern>/**</pattern>
+    </decorator>
+    
+</decorators>
