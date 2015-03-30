@@ -1,0 +1,6 @@
+/rideon-client/target/
+/rideon-common/target/
+/rideon-domain/target/
+/rideon-server/target/
+/segments-detector/target/
+/gpx-parser/target/
